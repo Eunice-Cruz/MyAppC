@@ -77,6 +77,8 @@ public class Login extends AppCompatActivity {
                             Toast.makeText(Login.this, mensaje, Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(Login.this, Acceso.class);
                             startActivity(intent);
+                            intent.putExtra("archivo", x);
+                            startActivity(intent);
                         }
 
                         Toast.makeText(Login.this, mensaje, Toast.LENGTH_SHORT).show();
