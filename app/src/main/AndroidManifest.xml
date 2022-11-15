@@ -13,6 +13,20 @@
         android:theme="@style/Theme.MyRegistro"
         tools:targetApi="31">
         <activity
+            android:name=".MyInfo1"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ListViewActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".MyInfo"
             android:exported="false">
             <meta-data
