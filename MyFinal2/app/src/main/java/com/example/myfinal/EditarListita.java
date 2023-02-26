@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.example.myfinal.BD.MyBD;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -39,14 +41,9 @@ public class EditarListita extends AppCompatActivity {
         try {
             if (numContext == 2) {
                 int numArchivoCuenta = getIntent().getExtras().getInt("numArchivoCuenta");
-                BufferedReader file = new BufferedReader(new InputStreamReader(openFileInput("Archivo" + numArchivo + "." + numArchivoCuenta + ".txt")));
-                String lineaTexto = file.readLine();
-                String completoTexto = "";
-                while(lineaTexto != null){
-                    completoTexto = completoTexto + lineaTexto;
-                    lineaTexto = file.readLine();
-                }
-                file.close();
+
+                MyBD dbPagina = new MyBD(EditarListita.this);
+                String completoTexto = dbPagina.checarCuenta(numArchivo, numArchivoCuenta);
 
                 JSON json = new JSON();
                 MyCuenta datos = json.leerJsonCuenta(completoTexto);
@@ -78,6 +75,7 @@ public class EditarListita extends AppCompatActivity {
                 Toast.makeText(EditarListita.this, mensaje, Toast.LENGTH_SHORT).show();
             }else {
                 JSON json = new JSON();
+                MyBD dbPagina = new MyBD(EditarListita.this);
                 if (numContext == 1) {
                     try{
                         String valorNombre = Name.getText().toString();
@@ -93,12 +91,11 @@ public class EditarListita extends AppCompatActivity {
                         boolean BucleArchivo = true;
                         int x = 1;
                         while (BucleArchivo) {
-                            File Cfile = new File(getApplicationContext().getFilesDir() + "/" + "Archivo" + numArchivo + "." + x + ".txt");
-                            if (Cfile.exists()) {x = x + 1;}
+
+                            if (dbPagina.comprobarCuenta(numArchivo, x)){x=x+1;}
                             else {
-                                BufferedWriter fileC = new BufferedWriter(new OutputStreamWriter(openFileOutput("Archivo" + numArchivo + "." + x + ".txt", Context.MODE_PRIVATE)));
-                                fileC.write(textoJsonCuenta);
-                                fileC.close();
+
+                                dbPagina.ingresarCuenta(numArchivo, x, textoJsonCuenta);
 
                                 BucleArchivo = false;
                             }
@@ -119,9 +116,7 @@ public class EditarListita extends AppCompatActivity {
 
                         String textoJsonCuenta = json.crearJsonCuenta( valorNombre, valorPassword, valorImage);
 
-                        BufferedWriter fileC = new BufferedWriter(new OutputStreamWriter(openFileOutput("Archivo" + numArchivo + "." + numArchivoCuenta + ".txt", Context.MODE_PRIVATE)));
-                        fileC.write(textoJsonCuenta);
-                        fileC.close();
+                        dbPagina.editarCuenta(numArchivo, numArchivoCuenta, textoJsonCuenta);
                     }catch(Exception e){}
                 }
                 Intent intent = new Intent(EditarListita.this, Listita.class);

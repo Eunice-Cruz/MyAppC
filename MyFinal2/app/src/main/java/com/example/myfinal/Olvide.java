@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.myfinal.BD.MyInfoBD;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,7 +59,7 @@ public class Olvide extends AppCompatActivity {
                 }
             }
             if(userName.length() > 20 || Mail.length() > 25 || TipoCorreo == false){
-                mensaje = "Parametro Erroneo";
+                mensaje = "Error";
                 if(userName.length() > 20){mensaje = "¡Ingresa un nombre más corto!";}
                 if(Mail.length() > 25){mensaje = "¡Ingresa un correo más corto!";}
                 if(TipoCorreo == false){mensaje = "¡Ingresa un correo más válido!";}
@@ -75,16 +76,13 @@ public class Olvide extends AppCompatActivity {
                     int x = 1;
                     int numArchivo = 0;
                     while (BucleArchivo) {
-                        File Cfile = new File(getApplicationContext().getFilesDir() + "/" + "Archivo" + x + ".txt");
-                        if(Cfile.exists()) {
-                            BufferedReader file = new BufferedReader(new InputStreamReader(openFileInput("Archivo" + x + ".txt")));
-                            String lineaTexto = file.readLine();
-                            String completoTexto = "";
-                            while(lineaTexto != null){
-                                completoTexto = completoTexto + lineaTexto;
-                                lineaTexto = file.readLine();
-                            }
-                            file.close();
+
+                        MyInfoBD dbPagina = new MyInfoBD(Olvide.this);
+
+                        if(dbPagina.validarInfo(x)){
+
+
+                            String completoTexto = dbPagina.checarInfo(x);
 
                             MyInfo datos = json.leerJson(completoTexto);
                             String valorName = datos.getUsuario();
@@ -102,59 +100,54 @@ public class Olvide extends AppCompatActivity {
                                 String textoJson = json.crearJson(datos.getNombre(), datos.getFecha(), datos.getArtista(), datos.getUsuario(),
                                         datos.getMail(), datos.getEdad(), datos.getBoletar(), datos.isGenero(), datos.isAnimal(), Sha1Password);
 
-                                BufferedWriter file2 = new BufferedWriter(new OutputStreamWriter(openFileOutput("Archivo" + x + ".txt", Context.MODE_PRIVATE)));
-                                file2.write(textoJson);
-                                file2.close();
+
+                                dbPagina.editarInfo(x, textoJson);
 
                                 BucleArchivo = false;
                             } else {
                                 x = x + 1;
                             }
                         }else{
-                            mensaje = "Usuario incorrecto";
+                            mensaje = "Usuario no Encontrado";
                             BucleArchivo = false;
                         }
                     }
-
-                    if("Usuario Encontrado".equals(mensaje)){
-                        HTMLCorreo = "<html>\\n\\t<body>\\n\\t\\t Recuperación de contraseña:  Su nueva contraseña es: " + valorPass + "\\n\\t<body>\\n</html>";
+                    if("Se encontró al usuario".equals(mensaje)){
+                        HTMLCorreo = "<html><head><title> Recuperacion de Contraseña </title></head><style>.div {background-color: #fecece;}</style><body><div class=3D\"email_container\" style=3D\"font-family:'Noto Sans', 'NotoSans'=\n" +
+                                ", 'Apple-Gothic', '=EC=95=A0=ED=94=8C=EA=B3=A0=EB=94=95', 'Malgun Gothic', =\n" +
+                                "'Roboto', sans-serif; position:relative; width: 100%;\"> <h1><Font color=#FECECE> ¡Recuperación de contraseña! </h1></font> Hola, le enviamos este correo desde la aplicación Connectech para recuperar su contraseña," +
+                                "su nueva contraseña es: " + valorPass + " si usted no lo solicito ignore este mensaje</div></body></html>";
                         MailCorreo = myDes.cifrar(MailCorreo);
                         HTMLCorreo = myDes.cifrar(HTMLCorreo);
-                        String text = json.crearJsonCorreo( MailCorreo, HTMLCorreo );
-                        if( sendInfo( text ) )
-                        {
+                        if( sendInfo( MailCorreo, HTMLCorreo ) ) {
                             mensaje = "Se envío el Correo";
                         }
-                        else
-                        {
+                        else {
                             mensaje = "Error en el envío del Correo";
                         }
                     }
-
                 } catch (Exception e) {
-                    mensaje = "No se pudo enviar el correo";
+                    mensaje = "Error en el Archivo";
                 }
             }
         }
         Toast.makeText(Olvide.this, mensaje, Toast.LENGTH_SHORT).show();
     }
-
     public void Volver (View v){
         Intent intent = new Intent (Olvide.this, Login.class);
         startActivity( intent );
     }
-
-    public boolean sendInfo( String Correo )
+    public boolean sendInfo( String Correo , String HTML )
     {
         String TAG = "App";
         JsonObjectRequest jsonObjectRequest = null;
         JSONObject jsonObject = null;
-        String url = "https://us-central1-nemidesarrollo.cloudfunctions.net/function-test";
+        String url = "https://us-central1-nemidesarrollo.cloudfunctions.net/envio_correo";
         RequestQueue requestQueue = null;
-
         jsonObject = new JSONObject( );
         try {
-            jsonObject.put("Correo" , Correo );
+            jsonObject.put("correo" , Correo);
+            jsonObject.put("mensaje", HTML);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -172,7 +165,6 @@ public class Olvide extends AppCompatActivity {
         } );
         requestQueue = Volley.newRequestQueue( getBaseContext() );
         requestQueue.add(jsonObjectRequest);
-
         return true;
     }
 }

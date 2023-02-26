@@ -2,7 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/MenuNuevoId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:icon="@android:drawable/ic_input_add"
         android:title="@string/menu_nuevo" />
+    <item
+        android:id="@+id/LLevarA"
+        android:icon="@android:drawable/ic_input_add"
+        android:title="@string/menu_api" />
 
 </menu>

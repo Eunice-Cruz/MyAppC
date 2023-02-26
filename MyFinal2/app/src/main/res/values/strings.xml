@@ -20,6 +20,7 @@
     <string name="logout">Cerrar Sesión</string>
     <string name="back">Volver</string>
     <string name="menu_nuevo">Nuevo</string>
+    <string name="menu_api">API</string>
     <string name="menu_copiar">Cerrar Sesión</string>
     <string name="list_name">Cuenta: </string>
     <string name="list_nameHint">Escribir el nombre</string>

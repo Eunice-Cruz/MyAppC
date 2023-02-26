@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.example.myfinal.BD.MyInfoBD;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
@@ -26,15 +28,11 @@ public class Acceso extends AppCompatActivity {
                 int numArchivo = getIntent().getExtras().getInt("numArchivo");
                 JSON json = new JSON();
 
-                BufferedReader file = new BufferedReader(new InputStreamReader(openFileInput("Archivo" + numArchivo + ".txt")));
-                String lineaTexto = file.readLine();
-                String completoTexto = "";
-                while(lineaTexto != null){
-                    completoTexto = completoTexto + lineaTexto;
-                    lineaTexto = file.readLine();
-                }
+
+
+                MyInfoBD myInfobd = new MyInfoBD(Acceso.this);
+                String completoTexto = myInfobd.checarInfo(numArchivo);
                 MyInfo datos = json.leerJson(completoTexto);
-                file.close();
 
                 textview.setText("¡Bienvenido! " + datos.getNombre());
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN , WindowManager.LayoutParams.FLAG_FULLSCREEN);

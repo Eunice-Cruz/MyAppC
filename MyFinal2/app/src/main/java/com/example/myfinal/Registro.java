@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.example.myfinal.BD.MyInfoBD;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -101,32 +103,41 @@ public class Registro extends AppCompatActivity {
                     boolean BucleArchivo = true;
                     int x = 1;
                     while (BucleArchivo) {
-                        File Cfile = new File(getApplicationContext().getFilesDir() + "/" + "Archivo" + x + ".txt");
-                        if (Cfile.exists()) {
-                            BufferedReader file = new BufferedReader(new InputStreamReader(openFileInput("Archivo" + x + ".txt")));
+                        //File Cfile = new File(getApplicationContext().getFilesDir() + "/" + "Archivo" + x + ".txt");
+                        //if (Cfile.exists()) {
+                        MyInfoBD myInfoBD = new MyInfoBD(Registro.this);
+                        if (myInfoBD.validarInfo(x)) {
+                            /*BufferedReader file = new BufferedReader(new InputStreamReader(openFileInput("Archivo" + x + ".txt")));
                             String lineaTexto = file.readLine();
                             String completoTexto = "";
                             while(lineaTexto != null){
                                 completoTexto = completoTexto + lineaTexto;
                                 lineaTexto = file.readLine();
                             }
-                            file.close();
+                            file.close();*/
+                            String cTexto = myInfoBD.checarInfo(x);
 
-                            MyInfo datos = json.leerJson(completoTexto);
+                            MyInfo datos = json.leerJson(cTexto);
                             String ValoruserName2 = datos.getUsuario();
                             String ValorMail2 = datos.getMail();
                             int ValorNumber2 = datos.getBoletar();
 
                             if (JUsuario.equals(ValoruserName2) || JMail.equals(ValorMail2) || JBoleta == ValorNumber2) {
-                                if(JMail.equals(ValorMail2)){mensaje = "El correo ya está registrado";}
-                                if(JBoleta == ValorNumber2){mensaje = "La boleta ya está registrada";}
-                                if(JUsuario.equals(ValoruserName2)){mensaje = "El usuario ya está registrado";}
+                                if (JMail.equals(ValorMail2)) {
+                                    mensaje = "El correo ya está registrado";
+                                }
+                                if (JBoleta == ValorNumber2) {
+                                    mensaje = "La boleta ya está registrada";
+                                }
+                                if (JUsuario.equals(ValoruserName2)) {
+                                    mensaje = "El usuario ya está registrado";
+                                }
                                 BucleArchivo = false;
                             } else {
                                 x = x + 1;
                             }
                         } else {
-                            BufferedWriter file = new BufferedWriter(new OutputStreamWriter(openFileOutput("Archivo" + x + ".txt", Context.MODE_PRIVATE)));
+                            /* BufferedWriter file = new BufferedWriter(new OutputStreamWriter(openFileOutput("Archivo" + x + ".txt", Context.MODE_PRIVATE)));
                             file.write(textoJson);
                             file.close();
                             mensaje = "Se completó el registro";
@@ -143,9 +154,29 @@ public class Registro extends AppCompatActivity {
                             Perro.setChecked(false);
                             Pswd.setText("");
                             BucleArchivo = false;
+
+                             */
+                            long status = myInfoBD.insertarInfo(x, textoJson);
+                            if (status > 0) {
+                                mensaje = "Se registro el usuario";
+                                Nombre.setText("");
+                                fecha.setText("");
+                                artista.setText("");
+                                usuario.setText("");
+                                Mail.setText("");
+                                edad.setText("");
+                                boleta.setText("");
+                                Mujer.setChecked(false);
+                                Hombre.setChecked(false);
+                                Gato.setChecked(false);
+                                Perro.setChecked(false);
+                                Pswd.setText("");
+                                BucleArchivo = false;
+                            } else {
+                                mensaje = "No se pudo completar el registro";
+                            }
                         }
                     }
-
                 } catch (Exception e) {
                     mensaje = "No se pudo completar el registro";
                 }
