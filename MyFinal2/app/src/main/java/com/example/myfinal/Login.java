@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.myfinal.BD.MyInfoBD;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -47,34 +49,28 @@ public class Login extends AppCompatActivity {
                     int x = 1;
                     int numArchivo = 0;
                     while (BucleArchivo) {
-                        File Cfile = new File(getApplicationContext().getFilesDir() + "/" + "Archivo" + x + ".txt");
-                        if(Cfile.exists()) {
-                            BufferedReader file = new BufferedReader(new InputStreamReader(openFileInput("Archivo" + x + ".txt")));
-                            String lineaTexto = file.readLine();
-                            String completoTexto = "";
-                            while(lineaTexto != null){
-                                completoTexto = completoTexto + lineaTexto;
-                                lineaTexto = file.readLine();
-                            }
-                            file.close();
+                        MyInfoBD myInfoBD = new MyInfoBD(Login.this);
+                        if (myInfoBD.validarInfo(x)){
 
-                            MyInfo datos = json.leerJson(completoTexto);
+                            String cTexto = myInfoBD.checarInfo(x);
+
+                            MyInfo datos = json.leerJson(cTexto);
                             String Sha1Password2 = datos.getPassword();
 
                             if (Sha1Password1.equals(Sha1Password2)) {
-                                mensaje = "Usuario Encontrado";
+                                mensaje = "Se encontró el usuario";
                                 numArchivo = x;
                                 BucleArchivo = false;
                             } else {
                                 x = x + 1;
                             }
                         }else{
-                            mensaje = "Usuario no Encontrado";
+                            mensaje = "No se encontró el usuario\"";
                             BucleArchivo = false;
                         }
                     }
 
-                    if("Usuario Encontrado".equals(mensaje)){
+                    if("Se encontró el usuario".equals(mensaje)){
                         Toast.makeText(Login.this, mensaje, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(Login.this, Acceso.class);
                         intent.putExtra("numArchivo", numArchivo);
@@ -82,7 +78,7 @@ public class Login extends AppCompatActivity {
                     }
 
                 } catch (Exception e) {
-                    mensaje = "Error en el Archivo";
+                    mensaje = "Error";
                 }
             }
         }

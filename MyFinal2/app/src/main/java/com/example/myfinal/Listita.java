@@ -14,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.example.myfinal.BD.MyInfoBD;
+import com.example.myfinal.BD.MyBD;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -47,17 +49,12 @@ public class Listita extends AppCompatActivity {
         JSON json = new JSON();
 
         try {
-            BufferedReader fileU = new BufferedReader(new InputStreamReader(openFileInput("Archivo" + numArchivo + ".txt")));
-            String lineaTextoU = fileU.readLine();
-            String completoTextoU = "";
-            while(lineaTextoU != null){
-                completoTextoU = completoTextoU + lineaTextoU;
-                lineaTextoU = fileU.readLine();
-            }
-            MyInfo datosU = json.leerJson(completoTextoU);
-            fileU.close();
 
-            textView.setText("Cuentas de " + datosU.getUsuario());
+            MyInfoBD myInfoBD = new MyInfoBD(Listita.this);
+            String completoTextoU = myInfoBD.checarInfo(numArchivo);
+            MyInfo datosUsuario = json.leerJson(completoTextoU);
+
+            textView.setText("Cuentas de " + datosUsuario.getUsuario());
 
             listView1 = (ListView) findViewById(R.id.listViewId1);
             list1 = new ArrayList<MyCuenta>();
@@ -71,16 +68,10 @@ public class Listita extends AppCompatActivity {
             boolean BucleArchivo = true;
             int x = 1;
             while (BucleArchivo) {
-                File Cfile = new File(getApplicationContext().getFilesDir() + "/" + "Archivo" + numArchivo + "." + x + ".txt");
-                if(Cfile.exists()) {
-                    BufferedReader file = new BufferedReader(new InputStreamReader(openFileInput("Archivo" + numArchivo + "." + x + ".txt")));
-                    String lineaTexto = file.readLine();
-                    String completoTexto = "";
-                    while(lineaTexto != null){
-                        completoTexto = completoTexto + lineaTexto;
-                        lineaTexto = file.readLine();
-                    }
-                    file.close();
+                MyBD dbC= new MyBD(Listita.this);
+                if (dbC.comprobarCuenta(numArchivo, x)){
+
+                    String completoTexto = dbC.checarCuenta(numArchivo, x);
 
                     MyCuenta datos = json.leerJsonCuenta(completoTexto);
 
@@ -130,7 +121,7 @@ public class Listita extends AppCompatActivity {
                 }
             });
         }catch(Exception e){
-            Toast.makeText(getBaseContext(), "Error al Cargar la Lista", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), "Error al cargar", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -156,28 +147,21 @@ public class Listita extends AppCompatActivity {
             boolean BucleArchivo = true;
             int x = (i + 1);
             while (BucleArchivo) {
-                File Cfile1 = new File(getApplicationContext().getFilesDir() + "/" + "Archivo" + numArchivo + "." + x + ".txt");
-                File Cfile2 = new File(getApplicationContext().getFilesDir() + "/" + "Archivo" + numArchivo + "." + (x + 1) + ".txt");
-                if (Cfile1.exists() & Cfile2.exists()) {
-                    int numArchivoCuenta = getIntent().getExtras().getInt("numArchivoCuenta");
-                    BufferedReader file = new BufferedReader(new InputStreamReader(openFileInput("Archivo" + numArchivo + "." + (x + 1) + ".txt")));
-                    String lineaTexto = file.readLine();
-                    String completoTexto = "";
-                    while(lineaTexto != null){
-                        completoTexto = completoTexto + lineaTexto;
-                        lineaTexto = file.readLine();
-                    }
-                    file.close();
 
-                    BufferedWriter fileC = new BufferedWriter(new OutputStreamWriter(openFileOutput("Archivo" + numArchivo + "." + x + ".txt", Context.MODE_PRIVATE)));
-                    fileC.write(completoTexto);
-                    fileC.close();
+                MyBD dBC =new MyBD(Listita.this);
+                if (dBC.comprobarCuenta(numArchivo, x) & dBC.comprobarCuenta(numArchivo, (x+1))){
+                    int numArchivoCuenta = getIntent().getExtras().getInt("numArchivoCuenta");
+
+                    String cTexto = dBC.checarCuenta(numArchivo, (x + 1));
+                    dBC.editarCuenta(numArchivo, x, cTexto);
 
                     x = x + 1;
                 }
-                if (Cfile1.exists() & !Cfile2.exists()) {
-                    File Cfile = new File(getApplicationContext().getFilesDir() + "/" + "Archivo" + numArchivo + "." + x + ".txt");
-                    Cfile.delete();
+                if (dBC.comprobarCuenta(numArchivo, x) & !dBC.comprobarCuenta(numArchivo, (x+1))){
+
+
+                    dBC.eliminarCuenta(numArchivo, x);
+
                     Intent intent = new Intent (Listita.this, Listita.class);
                     intent.putExtra("numArchivo", numArchivo);
                     startActivity( intent );
@@ -209,6 +193,12 @@ public class Listita extends AppCompatActivity {
                 intent2.putExtra("numArchivo", numArchivo);
                 intent2.putExtra("numContext", 1);
                 startActivity( intent2 );
+                break;
+            case R.id.LLevarA:
+                int numArchivo1 = getIntent().getExtras().getInt("numArchivo");
+                Intent intent1 = new Intent (Listita.this, MainActivity2.class);
+                intent1.putExtra("numArchivo", numArchivo1);
+                startActivity( intent1 );
                 break;
             default:
                 seleccion = "sin opcion %s";
