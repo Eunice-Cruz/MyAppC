@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EB2C2C2C"
+    tools:context=".Olvide">
+
+    <View
+        android:id="@+id/viewRPHelper1"
+        android:layout_width="50dp"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewRPpass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/recovery_pass"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextRPpass"
+        app:layout_constraintStart_toStartOf="@+id/editTextRPpass" />
+
+    <EditText
+        android:id="@+id/editTextRPpass"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:background="#EB1E1E1E"
+        android:ems="10"
+        android:hint="@string/recovery_writepass"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#9F9F9F"
+        app:layout_constraintBottom_toTopOf="@+id/textViewRPnewpass1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewRPnewpass1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/recovery_newpass1"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextRPnewpass1"
+        app:layout_constraintStart_toStartOf="@+id/editTextRPnewpass1" />
+
+    <EditText
+        android:id="@+id/editTextRPnewpass1"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:background="#EB1E1E1E"
+        android:contextClickable="true"
+        android:ems="10"
+        android:hint="@string/recovery_writenewpass1"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#9F9F9F"
+        app:layout_constraintBottom_toTopOf="@+id/textViewRPnewpass2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewRPnewpass2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/recovery_newpass2"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextRPnewpass2"
+        app:layout_constraintStart_toStartOf="@+id/editTextRPnewpass2" />
+
+    <EditText
+        android:id="@+id/editTextRPnewpass2"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:background="#EB1E1E1E"
+        android:contextClickable="true"
+        android:ems="10"
+        android:hint="@string/recovery_writenewpass2"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#9F9F9F"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewRPHelper1" />
+
+    <Button
+        android:id="@+id/buttonRPrecovery"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="#0067B8"
+        android:onClick="RestablecerContraseña"
+        android:text="@string/recovery_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextRPnewpass2"
+        app:strokeColor="#FFFFFF"
+        app:strokeWidth="2dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

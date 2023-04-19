@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ConstraintLayoutFP"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/jm2"
+    tools:context=".Forgotpass">
+
+    <View
+        android:id="@+id/viewFPHelper1"
+        android:layout_width="50dp"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    <TextView
+        android:id="@+id/textViewFPName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/userName"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextFPName"
+        app:layout_constraintStart_toStartOf="@+id/editTextFPName" />
+
+    <EditText
+        android:id="@+id/editTextFPName"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:background="#FECECE"
+        android:ems="10"
+        android:hint="@string/writeuserName"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/textViewFPMail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewFPMail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/Mail"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextFPMail"
+        app:layout_constraintStart_toStartOf="@+id/editTextFPMail" />
+
+    <EditText
+        android:id="@+id/editTextFPMail"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:background="#FECECE"
+        android:contextClickable="true"
+        android:ems="10"
+        android:hint="@string/writeMail"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/viewFPHelper1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonFPRecoverPass"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="80dp"
+        android:backgroundTint="#FECECE"
+        android:onClick="RecuperarContraseña"
+        android:text="@string/recoverPassword"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextFPMail"
+        app:strokeColor="#000000"
+        app:strokeWidth="2dp" />
+
+    <Button
+        android:id="@+id/buttonFPReturn"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="50dp"
+        android:backgroundTint="#FECECE"
+        android:onClick="Volver"
+        android:text="@string/back"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonFPRecoverPass"
+        app:strokeColor="#000000"
+        app:strokeWidth="2dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

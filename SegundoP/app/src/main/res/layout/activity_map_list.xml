@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/RelativeLayoutML"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="16dp"
+    android:background="#EB2C2C2C"
+    tools:context=".MapList">
+
+    <org.osmdroid.views.MapView
+        android:id="@+id/mapViewML"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="MissingConstraints">
+
+    </org.osmdroid.views.MapView>
+
+    <Button
+        android:id="@+id/buttonML1"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignStart="@+id/mapViewML"
+        android:layout_alignBottom="@+id/mapViewML"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#FECECE"
+        android:onClick="Volver"
+        android:text="@string/list_map_back"
+        app:strokeColor="#000000"
+        android:textColor="#000000"
+        app:strokeWidth="2dp" />
+
+    <Button
+        android:id="@+id/buttonML2"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignEnd="@+id/mapViewML"
+        android:layout_alignBottom="@+id/mapViewML"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#FECECE"
+        android:onClick="Actualizar"
+        android:text="@string/list_map_update"
+        app:strokeColor="#000000"
+        android:textColor="#000000"
+        app:strokeWidth="2dp" />
+
+</RelativeLayout>
